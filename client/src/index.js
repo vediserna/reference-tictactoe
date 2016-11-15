@@ -1,9 +1,18 @@
+window.console.debug = window.console.log;
+
+import inject from './infrastructure/inject';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+
 import './index.css';
 
-window.console.debug = window.console.log;
+import AppContextModule from "./appContext";
+
+const {App} = AppContextModule(
+    inject({
+        io:window.io
+    })
+);
 
 ReactDOM.render(
   <App />,

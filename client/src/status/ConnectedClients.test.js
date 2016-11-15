@@ -1,8 +1,11 @@
 import ConnectedClientsModule from './ConnectedClients';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { shallow } from 'enzyme';
 
 describe("Connected clients component", function () {
+
+    var div, component;
 
     var socket = {
         listeners:{},
@@ -13,13 +16,13 @@ describe("Connected clients component", function () {
     };
     var ConnectedClients;
 
-    var div, component;
+
     beforeEach(function () {
         ConnectedClients = ConnectedClientsModule(inject({
             socket
         }));
         div = document.createElement('div');
-        component = ReactDOM.render(<ConnectedClients />, div);
+        component = shallow(<ConnectedClients />, div);
     });
 
     it('should render without error', function () {
@@ -34,6 +37,6 @@ describe("Connected clients component", function () {
         socket.listeners['stats']({
             numClients:99
         });
-        expect().toBeTruthy();
+        expect(component.text()).toContain('99 connected clients');
     });
 });

@@ -1,4 +1,4 @@
-import inject from './infrastructure/inject';
+import inject from './microdi/inject';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,8 +9,18 @@ import ConnectedClientsModule from 'status/ConnectedClients';
 
 function appContext(injected){
 
+    const environment = injected('env');
+    var socketURI;
+    if(environment=='development'){
+        socketURI='http://localhost:8080'
+    } else {
+        socketURI='/'
+    }
     const io = injected('io');
-    const socket = WebSocketModule(inject({io}));
+    const socket = WebSocketModule(inject({
+        io,
+        socketURI:socketURI
+    }));
 
     const ConnectedClients = ConnectedClientsModule(inject({
         socket

@@ -82,7 +82,7 @@ module.exports.startServer = function(PORT, PATH, CALLBACK) {
     };
 
     // Define where our static files will be fetched from:
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'static')));
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));

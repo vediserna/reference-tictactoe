@@ -10,7 +10,8 @@ import AppContextModule from "./appContext";
 
 const {App} = AppContextModule(
     inject({
-        io:window.io
+        io:window.io,
+        env:process.env.NODE_ENV
     })
 );
 ReactDOM.render(

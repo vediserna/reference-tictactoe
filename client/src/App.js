@@ -31,6 +31,9 @@ export default function(injected){
                     <button onClick={this.sendStupidMessage}>Send message</button>
                     <p></p>
                     <textarea readOnly="readonly" value={this.state.messages} onChange={this.textAreaChanged}></textarea>
+
+                    <p></p>
+                    <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode.</small>
                 </div>
             );
         }

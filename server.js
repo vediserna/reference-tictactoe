@@ -3,7 +3,7 @@ module.exports.startServer = function(PORT, PATH, CALLBACK) {
 
     var config = require('./server/config.js')[ENV];
 
-    var inject = require('./server/microdi/microdi');
+    var inject = require('./server/microdi/inject');
 
     var express = require('express'),
         session = require('express-session'),
@@ -98,7 +98,6 @@ module.exports.startServer = function(PORT, PATH, CALLBACK) {
      * ROUTE CONFIG *
      ****************/
 
-    console.debug("Hay, ES6");
     require('./server/routes/api')(
         inject({app})
     );

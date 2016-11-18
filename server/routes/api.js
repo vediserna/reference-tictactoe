@@ -1,11 +1,9 @@
-module.exports = function(deps) {
-    var app = deps('app');
-    console.debug("Got deps " + app);
-    app.get('/api/user', function(req, res) {
-        console.debug("Got API user request");
+module.exports = function(injected) {
+    var app = injected('app');
+
+    app.get('/api/config', function(req, res) {
         res.send({
-            name:"anonymous",
-            status:"authenticated"
+            socket:"http://localhost:8080"
         });
     });
 };

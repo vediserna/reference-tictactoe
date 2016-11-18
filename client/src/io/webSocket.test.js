@@ -1,4 +1,4 @@
-import inject from 'infrastructure/inject';
+import inject from 'microdi/inject';
 import ioModule from '_test/fakeIo';
 import webSocketModule from './webSocket';
 const io = ioModule();
@@ -7,8 +7,10 @@ const io = ioModule();
 describe("webSocket", function () {
 
     var socket;
+    var socketURI = 'http://localhost:8080/';
+
     beforeEach(function () {
-        socket = webSocketModule(inject({io}));
+        socket = webSocketModule(inject({io, socketURI}));
     });
 
     describe("initialization", function () {
@@ -17,7 +19,7 @@ describe("webSocket", function () {
         });
 
         it('should connect to socket', function () {
-            expect(io._connectedTo).toBe('http://localhost:8080/');
+            expect(io._connectedTo).toBe(socketURI);
         });
     });
 

@@ -1,0 +1,22 @@
+describe('inject dependency injection', function(){
+    const inject = require('./inject');
+
+    it('should return injected dependency',function(){
+        var deps = inject({
+            foo:"bar"
+        });
+        expect(deps("foo")).toBe('bar');
+    });
+
+    it('should fail on missing dependency',function(){
+        try{
+            var deps = inject({
+                foo:"bar"
+            });
+            deps("baz");
+        }  catch (e){
+            expect(e.message).toBe('Required dependency <baz> is not provided.');
+        }
+    });
+
+});

@@ -1,7 +1,8 @@
 export default function webSocket(injected){
     const io = injected("io");
-    // const url = injected("socketUrl");
+    const socketURI = injected("socketURI");
 
-    var socket = io.connect('http://localhost:8080/');
+    console.debug("socketURI", socketURI);
+    var socket = io.connect(socketURI);
     return socket;
 }

@@ -1,6 +1,6 @@
 window.console.debug = window.console.log;
 
-import inject from './infrastructure/inject';
+import inject from './microdi/inject';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -13,7 +13,6 @@ const {App} = AppContextModule(
         io:window.io
     })
 );
-
 ReactDOM.render(
   <App />,
   document.getElementById('root')

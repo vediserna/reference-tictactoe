@@ -14,6 +14,23 @@
     "jade": "^1.7.0",
     "javascript-brunch": ">=1.7.1",
     "jshint-brunch": "^1.7.0",
+    "parallelshell": "^2.0.0",
     "socket.io": "^1.5.1"
+  },
+  "devDependencies": {
+    "jest": "^17.0.3"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathDirs": [
+      "server/"
+    ]
+  },
+  "scripts": {
+    "startclient":"cd ./client && npm run start",
+    "start": "nodemon run.js",
+    "build": "export NODE_PATH=./src/ && react-scripts build",
+    "test": "nodemon ./node_modules/.bin/jest",
+    "dev":"./node_modules/.bin/parallelshell 'npm run start' 'npm run startclient'"
   }
 }

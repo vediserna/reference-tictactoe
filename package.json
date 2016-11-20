@@ -29,11 +29,10 @@
   "scripts": {
     "startclient":"cd ./client && npm run start",
     "buildclient":"cd ./client && npm run build",
-
     "clean": "[ -d ./build ] && rm -r ./build",
     "start": "nodemon run.js",
     "createbuild" : "[ -d build ] || mkdir build ",
-    "build": "npm run clean && npm run createbuild && npm run buildclient && mv client/build build/static && cp -R server build/server && cp run.js build && cp server.js build",
+    "build": "npm run clean && npm run createbuild && npm run buildclient && mv client/build build/static && cp -R server build/server && cp run.js build",
     "test": "nodemon ./node_modules/.bin/jest",
     "dev":"./node_modules/.bin/parallelshell 'npm run start' 'npm run startclient'"
   }

@@ -1,5 +1,5 @@
 module.exports = {
-    dev: {
+    development: {
         sessionSecret: 'developmentSessionSecret',
         db: {
             name: 'anOutlandishDatabase',
@@ -9,7 +9,7 @@ module.exports = {
         }
     },
 
-    prod: {
+    production: {
         sessionSecret: 'productionSessionSecret',
         db: {
             name: 'anOutlandishDatabase',

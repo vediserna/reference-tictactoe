@@ -11,7 +11,7 @@ function appContext(injected){
 
     const environment = injected('env');
     var socketURI;
-    if(environment=='development'){
+    if(environment==='development'){
         socketURI='http://localhost:8080'
     } else {
         socketURI='/'
@@ -29,7 +29,8 @@ function appContext(injected){
     const App = AppModule(inject({
         io,
         logo,
-        ConnectedClients
+        ConnectedClients,
+        socket
     }));
 
     var exports = {

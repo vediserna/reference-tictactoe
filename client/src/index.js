@@ -8,6 +8,8 @@ import './index.css';
 
 import AppContextModule from "./appContext";
 
+import _ from "lodash";
+
 const {App} = AppContextModule(
     inject({
         io:window.io,

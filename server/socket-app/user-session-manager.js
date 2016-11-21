@@ -1,7 +1,8 @@
-
 module.exports=function(injected){
 
     const io = injected('io');
+    const IncomingSocketMessageDispatcher = injected('IncomingSocketMessageDispatcher');
+    const commandRouter = injected('commandRouter');
 
     var clientId = 0;
     var numClients=0;
@@ -12,13 +13,16 @@ module.exports=function(injected){
 
     function trackClient(clientId, socket) {
 
-        var newUser = {clientId, userName: "Newbie#" + clientId};
-        io.emit('userJoined', newUser);
-        socket.emit('userAcknowledged', newUser); //
+        var i =0;
+        var newUserSession = {clientId, userName: "Newbie#" + clientId};
+        io.emit('userJoined', newUserSession);
+        socket.emit('userAcknowledged', newUserSession); //
         numClients++;
         emitStats();
 
-        connected[clientId] = newUser;
+        var socketCommandDispatcher = new IncomingSocketMessageDispatcher('issueCommand', socket, commandRouter, newUserSession);
+
+        connected[clientId] = newUserSession;
         socket.emit('usersConnected', connected);
 
         socket.on('disconnect', ()=>{
@@ -29,20 +33,16 @@ module.exports=function(injected){
         });
 
         socket.on('changeUserName', function(userNameChange){
-
             var changedUser = {clientId, userName:userNameChange.userName };
             connected[clientId] = changedUser;
-            console.debug("Got user name change, emitting change event ", changedUser );
             io.emit('userChanged', changedUser)
         });
 
         socket.on('sendMessage', function(messageObj){
-            console.debug("Got message ", messageObj);
             io.emit('messageReceived', {clientId, sender: connected[clientId],  message: messageObj.message })
         })
 
     }
-
 
 
     function emitStats() {

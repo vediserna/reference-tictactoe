@@ -19,7 +19,7 @@ export default function(injected){
                 me:{
                     userName:""
                 }
-            }
+            };
             this.sendChatMessage = this.sendChatMessage.bind(this);
             this.userNameChanged = this.userNameChanged.bind(this);
             this.unsentMessageChanged = this.unsentMessageChanged.bind(this);
@@ -60,11 +60,26 @@ export default function(injected){
                 this.setState({
                     messageList:messageList
                 });
+            });
+            socket.on('messageReceived', (messageObj)=>{
+                var messageList = this.state.messageList;
+                messageList.push(messageObj);
+                this.setState({
+                    messageList:messageList
+                });
+            });
+            socket.on('eventIssued', (messageObj)=>{
+                var messageList = this.state.messageList;
+                console.debug("Got event from server...", messageObj);
+                messageList.push(messageObj);
+                this.setState({
+                    messageList:messageList
+                });
             })
         }
         sendChatMessage(){
-            console.debug("Sending message on socket ", this.state.unsentMessage);
-            socket.emit('sendMessage', { message: this.state.unsentMessage });
+            console.debug("Sending command message on socket ", this.state.unsentMessage);
+            socket.emit('issueCommand', {type:"chatCommand", message: this.state.unsentMessage });
         }
         userNameChanged(event){
             socket.emit('changeUserName',{userName:event.target.value})
@@ -80,7 +95,7 @@ export default function(injected){
                 return <span key={user.clientId}>{user.clientId}:{user.userName}</span>
             });
             var messages = _.map(this.state.messageList, (message, idx)=>{
-                return <span key={idx}>{message.sender.userName} says {message.message}</span>
+                return <span key={idx}>{message.sender.userName} says {message.message}<p></p></span>
             });
 
             return (

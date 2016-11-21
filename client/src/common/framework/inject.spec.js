@@ -19,4 +19,11 @@ describe('inject dependency injection', function(){
         }
     });
 
+    it('should not fail on optional missing dependency', function(){
+        var deps = inject({
+            x:"bar"
+        });
+        expect(deps("foo", true)).toBe(undefined);
+    })
+
 });

@@ -3,23 +3,22 @@ function serverModule(injected) {
     var ENV = injected('env');
     var PORT = injected('port');
 
-    const inject = require('./microdi/inject');
     const config = require('./config.js')[ENV];
+
+    const Express = require('express');
+    const Session = require('express-session');
+    const BodyParser = require('body-parser');
+    const Path = require('path');
+    const SocketIo = require('socket.io');
+
+    const ChatAppContext = require('./socket-app/chat-app-context');
 
     return {
         startServer: function(CALLBACK){
 
-            var express = require('express'),
-                session = require('express-session'),
-                bodyParser = require('body-parser'),
-                path = require('path'),
-                fs = require('fs'),
-                app = express(),
-                server = app.listen(PORT, CALLBACK),
-                cookieParser = require('cookie-parser')(config.sessionSecret),
-                io = require('socket.io')(server);
-
-            require('./client-tracker/client-tracker-api')(inject({io}));
+            console.debug("Starting server");
+            const CookieParser = require('cookie-parser');
+            var app = Express();
 
             var sessionOpts = {
                 secret: config.sessionSecret,
@@ -28,30 +27,33 @@ function serverModule(injected) {
             };
 
             // Define where our static files will be fetched from:
-            app.use(express.static(path.join(__dirname,'..', 'static')));
+            app.use(Express.static(Path.join(__dirname, '..', 'static')));
 
-            app.use(bodyParser.json());
-            app.use(bodyParser.urlencoded({ extended: true }));
+            app.use(BodyParser.json());
+            app.use(BodyParser.urlencoded({ extended: true }));
+
+            var cookieParser = CookieParser(config.sessionSecret);
             app.use(cookieParser);
-            app.use(session(sessionOpts));
 
-            // Tell Express where our server views (Jade files) are kept.
-            // Then we can do render('NAME_OF_VIEW') inside an Express route request. e.g. render('index')
-            app.set('views', path.join(__dirname, 'server/views'));
-            app.set('view engine', 'jade');
-
-            /*******************************************************************************************************************
-             * ROUTE CONFIG *
-             ****************/
+            app.use(Session(sessionOpts));
 
             require('./http-routes/api')(
                 inject({app})
             );
 
             app.get('/*', function (req, res) {
-                // Render index and pass route handling to Angular
-                res.sendFile(path.join(__dirname,'static','index.html'));
+                // Render index.html in all cases and pass route handling to react
+                res.sendFile(Path.join(__dirname,'static','index.html'));
             });
+
+            var server = app.listen(PORT, CALLBACK);
+            var io = SocketIo(server);
+
+          //  SocketSessionManager(inject({io}));
+            console.debug("Setting up chat app context");
+            ChatAppContext(inject({io}));
+            console.debug("Done setting up context");
+
         }
     }
 };

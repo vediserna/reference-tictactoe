@@ -21,7 +21,8 @@
   },
   "eslintConfig": {
     "globals":{
-      "_":true
+      "_":true,
+      "inject":true
     }
   }
 }

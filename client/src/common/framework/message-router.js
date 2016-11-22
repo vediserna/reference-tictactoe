@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 module.exports = function (settings) {
-    const routingKey = settings && settings.routingKey || "type";
+    const routingKey = (settings && settings.routingKey) || "type";
 
     const listeners = {};
 
@@ -9,9 +9,11 @@ module.exports = function (settings) {
         listeners[routingKeyValue] = listeners[routingKeyValue] || [];
         listeners[routingKeyValue].push(callback);
         return function () {
+            // eslint-disable-next-line
             messageRouter.unsubscribe(routingKeyValue, callback);
         }
     };
+
     var messageRouter = {
         subscribe: subscribe,
         on: subscribe,

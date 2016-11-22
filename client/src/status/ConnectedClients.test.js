@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-describe("Connected clients component", function () {
+describe("Connected socket clients component", function () {
 
     var div, component;
 

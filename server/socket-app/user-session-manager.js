@@ -1,26 +1,24 @@
 module.exports=function(injected){
 
     const io = injected('io');
-    const IncomingSocketMessageDispatcher = injected('IncomingSocketMessageDispatcher');
+    const incomingSocketMessageDispatcher = injected('incomingSocketMessageDispatcher');
     const commandRouter = injected('commandRouter');
 
     var clientId = 0;
     var numClients=0;
 
     var connected={
-
     };
 
     function trackClient(clientId, socket) {
 
-        var i =0;
         var newUserSession = {clientId, userName: "Newbie#" + clientId};
         io.emit('userJoined', newUserSession);
         socket.emit('userAcknowledged', newUserSession); //
         numClients++;
         emitStats();
 
-        var socketCommandDispatcher = new IncomingSocketMessageDispatcher('issueCommand', socket, commandRouter, newUserSession);
+        var dispatcher = incomingSocketMessageDispatcher.startDispatching(socket, newUserSession);
 
         connected[clientId] = newUserSession;
         socket.emit('usersConnected', connected);
@@ -29,13 +27,13 @@ module.exports=function(injected){
             io.emit('userLeft', {clientId, message : "User left the party"});
             numClients--;
             emitStats();
+            dispatcher.stopDispatching(socket);
             delete connected[clientId];
         });
 
         socket.on('changeUserName', function(userNameChange){
-            var changedUser = {clientId, userName:userNameChange.userName };
-            connected[clientId] = changedUser;
-            io.emit('userChanged', changedUser)
+            connected[clientId].userName=userNameChange.userName;
+            io.emit('userChanged', connected[clientId])
         });
 
         socket.on('sendMessage', function(messageObj){

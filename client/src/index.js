@@ -1,6 +1,6 @@
 window.console.debug = window.console.log;
 
-import inject from './microdi/inject';
+import inject from './common/framework/inject';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

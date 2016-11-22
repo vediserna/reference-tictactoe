@@ -1,16 +1,22 @@
-import inject from './microdi/inject';
-import logo from './logo.svg';
-import './App.css';
+import inject from './common/framework/inject';
 
 import AppModule from 'App';
 import WebSocketModule from 'io/webSocket';
 import ConnectedClientsModule from 'status/ConnectedClients';
+import ConnectedUsersModule from 'status/ConnectedUsers';
+import ChatModule from 'chat/Chat';
+import MessageRouter from 'common/framework/message-router'
 
+
+import IncomingSocketMessageDispatcherModule from 'common/framework/incoming-socket-message-dispatcher';
+import OutgoingSocketIoMessagePortModule from 'common/framework/outgoing-socket-io-message-port';
+
+const OutgoingSocketIoMessagePort = OutgoingSocketIoMessagePortModule(inject({}));
 
 function appContext(injected){
 
-    const eventRouter = require('./common/framework/message-router')();
-    const commandRouter = require('./common/framework/message-router')();
+    const eventRouter = MessageRouter();
+    const commandRouter = MessageRouter();
 
     const environment = injected('env');
     var socketURI;
@@ -25,20 +31,40 @@ function appContext(injected){
         socketURI:socketURI
     }));
 
+    const incomingSocketMessageDispatcher = IncomingSocketMessageDispatcherModule(
+        inject({
+            socketIoVerb:'eventIssued',
+            messageRouter:eventRouter
+        }));
+
+    new OutgoingSocketIoMessagePort(socket, commandRouter,'issueCommand');
+
     const ConnectedClients = ConnectedClientsModule(inject({
         socket
+    }));
+    const ConnectedUsers = ConnectedUsersModule(inject({
+        socket
+    }));
+    const Chat = ChatModule(inject({
+        commandPort:commandRouter,
+        eventRouter
     }));
 
     const App = AppModule(inject({
         io,
-        logo,
         ConnectedClients,
-        socket
+        ConnectedUsers,
+        Chat,
+        socket,
+        eventRouter
     }));
 
     var exports = {
         App
+
     };
+
+    incomingSocketMessageDispatcher.startDispatching(socket);
 
     return exports;
 

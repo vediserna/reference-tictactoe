@@ -1,9 +1,10 @@
 module.exports=function(injected){
     class SocketIoEventPort{
-        constructor(io, eventRouter){
-            eventRouter.on('*', (event)=>{
+        constructor(socketIo, messageRouter, socketVerb){
+            socketVerb = socketVerb || 'eventIssued';
+            messageRouter.on('*', (event)=>{
                 console.debug("Emitting event on socket io bus", event);
-                io.emit('eventIssued', event);
+                socketIo.emit(socketVerb, event);
             })
         }
     }

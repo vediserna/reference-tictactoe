@@ -1,4 +1,4 @@
-import inject from 'microdi/inject';
+import inject from 'common/framework/inject';
 import ioModule from '_test/fakeIo';
 import webSocketModule from './webSocket';
 const io = ioModule();

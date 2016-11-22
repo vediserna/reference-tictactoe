@@ -1,4 +1,4 @@
-import inject from "microdi/inject";
+import inject from "common/framework/inject";
 
 window.console.debug=window.console.log;
 

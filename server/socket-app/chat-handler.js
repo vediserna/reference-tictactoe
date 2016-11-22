@@ -1,8 +1,7 @@
 module.exports=function(injected){
-    class ChatAggregate{
+    class ChatHandler{
         constructor(commandRouter, eventPortRouter){
             commandRouter.on('chatCommand', function(commandMessage){
-                console.debug("Got chat command", commandMessage);
                 eventPortRouter.routeMessage({
                     type:'chatMessageReceived',
                     message:commandMessage.message,
@@ -11,6 +10,6 @@ module.exports=function(injected){
             })
         }
     }
-    return ChatAggregate;
+    return ChatHandler;
 };
 

@@ -10,13 +10,15 @@ function serverModule(injected) {
     const BodyParser = require('body-parser');
     const Path = require('path');
     const SocketIo = require('socket.io');
+    const Postgres = require('./db/postgres');
 
     const ChatAppContext = require('./socket-app/chat-app-context');
 
     return {
         startServer: function(CALLBACK){
 
-            console.debug("Starting server");
+            console.log("Starting server");
+
             const CookieParser = require('cookie-parser');
             var app = Express();
 
@@ -25,6 +27,8 @@ function serverModule(injected) {
                 resave: true,
                 saveUninitialized: true
             };
+
+            var dbPool = Postgres(inject({})).pool;
 
             // Define where our static files will be fetched from:
             app.use(Express.static(Path.join(__dirname, '..', 'static')));

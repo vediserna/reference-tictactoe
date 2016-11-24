@@ -25,9 +25,10 @@ module.exports=function(injected){
         commandRouter
     }));
 
-    const ChatApp = require('./chat-aggregate')(inject({}));
+    const ChatApp = require('./chat-handler')(inject({}));
 
     const chatAggregate = new ChatApp(commandRouter, eventMessageRouter);
+
 
     return {
         chatAggregate

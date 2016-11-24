@@ -7,6 +7,7 @@ import ConnectedUsersModule from 'status/ConnectedUsers';
 import ChatModule from 'chat/Chat';
 import MessageRouter from 'common/framework/message-router'
 
+import ConnectionFactoryModule from './connection-factory';
 
 import IncomingSocketMessageDispatcherModule from 'common/framework/incoming-socket-message-dispatcher';
 import OutgoingSocketIoMessagePortModule from 'common/framework/outgoing-socket-io-message-port';
@@ -48,6 +49,11 @@ function appContext(injected){
     const Chat = ChatModule(inject({
         commandPort:commandRouter,
         eventRouter
+    }));
+
+
+    const UserService = UserServiceModule(inject({
+        connectionFactory:myConnectionFactory
     }));
 
     const App = AppModule(inject({

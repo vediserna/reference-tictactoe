@@ -2,7 +2,9 @@ module.exports=function(injected){
 
     const io = injected('io');
     const incomingSocketMessageDispatcher = injected('incomingSocketMessageDispatcher');
+    const OutgoingSocketIoMessagePort = injected('OutgoingSocketIoMessagePort');
     const commandRouter = injected('commandRouter');
+    const queryRouter = injected('queryRouter');
 
     var clientId = 0;
     var numClients=0;
@@ -38,7 +40,20 @@ module.exports=function(injected){
 
         socket.on('sendMessage', function(messageObj){
             io.emit('messageReceived', {clientId, sender: connected[clientId],  message: messageObj.message })
-        })
+        });
+
+        const queryResultPort = OutgoingSocketIoMessagePort
+        (inject({
+            io:socket,
+            messageRouter:queryRouter
+        }));
+
+        const dispatchOnlyToOriginFilter = function(message){
+            return message.requestCommand._session.clientId===clientId;
+        };
+
+        queryResultPort.dispatchThroughIo('*', 'queryResult', dispatchOnlyToOriginFilter);
+
 
     }
 

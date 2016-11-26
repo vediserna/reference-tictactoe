@@ -7,8 +7,11 @@ module.exports=function(injected){
             var socket = _socket;
             var session = _session;
 
+            console.debug("Start dispatching ", socketIoVerb, messageRouter);
+
             var listener;
             listener = (message)=>{
+                console.debug("Routing message from socket IO", message);
                 message._session = session;
                 messageRouter.routeMessage(message);
             };

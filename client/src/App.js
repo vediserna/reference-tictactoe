@@ -7,7 +7,7 @@ import './App.css';
 export default function(injected){
     const ConnectedClients = injected("ConnectedClients");
     const ConnectedUsers = injected("ConnectedUsers");
-    const Chat = injected("ChatHandler");
+    const Chat = injected("Chat");
 
     class App extends React.Component {
         render() {
@@ -15,7 +15,7 @@ export default function(injected){
                 <div className="App">
                     <div className="App-header">
                         <img src={logo} className="App-logo" alt="logo"/>
-                        <h2>Welcome to HGOP 2016</h2>
+                        <h2>Welcome to HGOP 2016 base app</h2>
                     </div>
 
                     <ConnectedClients></ConnectedClients>

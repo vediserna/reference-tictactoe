@@ -11,6 +11,9 @@ function serverModule(injected) {
     const Path = require('path');
     const SocketIo = require('socket.io');
     const Postgres = require('./db/postgres');
+    const DbConfig = require('./database.json');
+
+    const dbConfig = DbConfig['dev'];
 
     const ChatAppContext = require('./socket-app/chat-app-context');
 
@@ -28,7 +31,7 @@ function serverModule(injected) {
                 saveUninitialized: true
             };
 
-            var dbPool = Postgres(inject({})).pool;
+            var dbPool = Postgres(inject({config:dbConfig})).pool;
 
             // Define where our static files will be fetched from:
             app.use(Express.static(Path.join(__dirname, '..', 'static')));
@@ -55,7 +58,7 @@ function serverModule(injected) {
 
           //  SocketSessionManager(inject({io}));
             console.debug("Setting up chat app context");
-            ChatAppContext(inject({io}));
+            ChatAppContext(inject({io, dbPool}));
             console.debug("Done setting up context");
 
         }

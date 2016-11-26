@@ -1,4 +1,4 @@
-const SocketIoEventPort = require('./outgoing-socket-io-message-port')(inject({}));
+const SocketIoEventPort = require('./outgoing-socket-io-message-port');
 
 
 describe('outgoing socket io message port', function(){
@@ -18,26 +18,18 @@ describe('outgoing socket io message port', function(){
         }
     };
 
-    it('should subscribe to all messages routed through message router',function(){
-        new SocketIoEventPort(fakeIo, fakeRouter);
-        expect(fakeRouter._subscriptions['*'].length).toBe(1);
+    beforeEach(function(){
+        var ioPort = SocketIoEventPort(inject({io:fakeIo, messageRouter: fakeRouter})) ;
+        ioPort.dispatchThroughIo('*', 'eventIssued');
+    });
 
+    it('should subscribe to all messages routed through message router',function(){
+        expect(fakeRouter._subscriptions['*'].length).toBe(1);
     });
 
     it('should emit event from socketIo server under eventIssued verb',function(){
-        new SocketIoEventPort(fakeIo, fakeRouter);
         fakeRouter._subscriptions["*"]({message:"test message"});
         expect(fakeIo._emitted["eventIssued"].length).toBe(1);
-
-    });
-
-});
-
-describe('chat server', function(){
-
-    it('should dispatch message received event on sendMessage command',function(){
-
-
     });
 
 });

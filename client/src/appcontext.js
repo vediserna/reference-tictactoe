@@ -1,5 +1,7 @@
 import inject from './common/framework/inject';
 
+import generateUUID from 'common/framework/uuid';
+
 import AppModule from 'App';
 import WebSocketModule from 'io/webSocket';
 import ConnectedClientsModule from 'status/ConnectedClients';
@@ -7,17 +9,14 @@ import ConnectedUsersModule from 'status/ConnectedUsers';
 import ChatModule from 'chat/Chat';
 import MessageRouter from 'common/framework/message-router'
 
-import ConnectionFactoryModule from './connection-factory';
-
 import IncomingSocketMessageDispatcherModule from 'common/framework/incoming-socket-message-dispatcher';
 import OutgoingSocketIoMessagePortModule from 'common/framework/outgoing-socket-io-message-port';
-
-const OutgoingSocketIoMessagePort = OutgoingSocketIoMessagePortModule(inject({}));
 
 function appContext(injected){
 
     const eventRouter = MessageRouter();
     const commandRouter = MessageRouter();
+    const queryRouter = MessageRouter();
 
     const environment = injected('env');
     var socketURI;
@@ -32,13 +31,28 @@ function appContext(injected){
         socketURI:socketURI
     }));
 
-    const incomingSocketMessageDispatcher = IncomingSocketMessageDispatcherModule(
+    const incomingSocketEventDispatcher = IncomingSocketMessageDispatcherModule(
         inject({
             socketIoVerb:'eventIssued',
             messageRouter:eventRouter
-        }));
+        })
+    );
+    const incomingSocketQueryDispatcher = IncomingSocketMessageDispatcherModule(
+        inject({
+            socketIoVerb:'queryResult',
+            messageRouter:queryRouter
+        })
+    );
 
-    new OutgoingSocketIoMessagePort(socket, commandRouter,'issueCommand');
+    const outgoingSocketIoMessagePort = OutgoingSocketIoMessagePortModule(
+        inject({
+            io:socket,
+            messageRouter:commandRouter
+        })
+    );
+
+    outgoingSocketIoMessagePort.dispatchThroughIo('*','issueCommand');
+
 
     const ConnectedClients = ConnectedClientsModule(inject({
         socket
@@ -48,12 +62,9 @@ function appContext(injected){
     }));
     const Chat = ChatModule(inject({
         commandPort:commandRouter,
-        eventRouter
-    }));
-
-
-    const UserService = UserServiceModule(inject({
-        connectionFactory:myConnectionFactory
+        eventRouter,
+        queryRouter,
+        generateUUID: generateUUID
     }));
 
     const App = AppModule(inject({
@@ -70,7 +81,8 @@ function appContext(injected){
 
     };
 
-    incomingSocketMessageDispatcher.startDispatching(socket);
+    incomingSocketEventDispatcher.startDispatching(socket);
+    incomingSocketQueryDispatcher.startDispatching(socket);
 
     return exports;
 

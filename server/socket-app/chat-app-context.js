@@ -1,36 +1,64 @@
+const generateUUID = require('client/src/common/framework/uuid');
 const IncomingSocketMessageDispatcher = require('client/src/common/framework/incoming-socket-message-dispatcher');
-const eventMessageRouter = require('client/src/common/framework/message-router')();
+const eventRouter = require('client/src/common/framework/message-router')();
 const commandRouter = require('client/src/common/framework/message-router')();
+const queryRouter = require('client/src/common/framework/message-router')();
+const CommandRepo = require('./command-repo');
+const EventRepo = require('./event-repo');
+const OutgoingSocketIoMessagePort = require('client/src/common/framework/outgoing-socket-io-message-port');
 
 module.exports=function(injected){
 
-    var x=0;
     const io = injected("io");
+    const dbPool = injected("dbPool");
 
 
-    const incomingSocketMessageDispatcher = IncomingSocketMessageDispatcher(inject({
+    const incomingCommandDispatcher = IncomingSocketMessageDispatcher(inject({
         socketIoVerb:'issueCommand',
         messageRouter:commandRouter
     }));
 
-    const SocketIoEventPort = require('client/src/common/framework/outgoing-socket-io-message-port')(inject({
 
+    const socketIoEventPort = OutgoingSocketIoMessagePort
+    (inject({
+        io:io,
+        messageRouter:eventRouter
     }));
 
-    var socketIoEventPort = new SocketIoEventPort(io, eventMessageRouter);
+    socketIoEventPort.dispatchThroughIo('*', 'eventIssued');
 
     require('./user-session-manager')(inject({
         io,
-        incomingSocketMessageDispatcher,
-        commandRouter
+        OutgoingSocketIoMessagePort,
+        incomingSocketMessageDispatcher: incomingCommandDispatcher,
+        commandRouter,
+        queryRouter
     }));
 
-    const ChatApp = require('./chat-handler')(inject({}));
+    const ChatHandler = require('./chat-handler')(inject({
+        generateUUID
+    }));
 
-    const chatAggregate = new ChatApp(commandRouter, eventMessageRouter);
+    const chatHandler = new ChatHandler(commandRouter, eventRouter);
+
+    const commandRepo = CommandRepo(
+        inject({
+            dbPool,
+            commandRouter
+        }));
+
+    const eventRepo = EventRepo(
+        inject({
+            dbPool,
+            eventRouter,
+            queryRouter,
+            commandRouter
+        }));
 
 
     return {
-        chatAggregate
+        chatHandler,
+        commandRepo,
+        eventRepo
     };
 };

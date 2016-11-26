@@ -5,6 +5,9 @@ export default function(injected){
 
     const commandPort =injected('commandPort');
     const eventRouter =injected('eventRouter');
+    const queryRouter =injected('queryRouter');
+
+    const generateUUID = injected('generateUUID');
 
     class Chat extends React.Component{
         constructor(){
@@ -20,10 +23,11 @@ export default function(injected){
             this.unsentMessageChanged = this.unsentMessageChanged.bind(this);
         }
         sendChatMessage(){
-            console.debug("Sending command message on command port ", this.state.unsentMessage);
+//            console.debug("Sending command message on command port ", this.state.unsentMessage);
 //            socket.emit('issueCommand', );
 
-            commandPort.routeMessage({type:"chatCommand", message: this.state.unsentMessage });
+            var cmdId = generateUUID();
+            commandPort.routeMessage({commandId:cmdId, type:"chatCommand", message: this.state.unsentMessage });
         }
         unsentMessageChanged(event){
             this.setState({
@@ -32,14 +36,22 @@ export default function(injected){
         }
 
         componentWillMount(){
-            eventRouter.on('chatMessageReceived', (messageObj)=>{
+            const chatMessageReceived = (messageObj)=>{
                 var messageList = this.state.messageList;
-                console.debug("Got chatMessageReceived event from server...", messageObj);
                 messageList.push(messageObj);
                 this.setState({
                     messageList:messageList
                 });
-            })
+            };
+            eventRouter.on('chatMessageReceived', chatMessageReceived);
+            queryRouter.on('chatHistoryResult', (resultMessage)=>{
+                console.debug("resultMessage", resultMessage);
+                _.each(resultMessage.events, function(event){
+                    chatMessageReceived(event);
+                });
+            });
+
+            commandPort.routeMessage({commandId:generateUUID(), type:"requestChatHistory"})
         }
         render(){
 
@@ -49,13 +61,14 @@ export default function(injected){
 
             return (
                 <div className="Chat">
-                    <p></p>
-                    { messages }
-                    <p></p>
 
                     <textarea value={this.state.unsentMessage} onChange={this.unsentMessageChanged}></textarea>
                     <p></p>
                     <button onClick={this.sendChatMessage}>Send message</button>
+                    <p></p>
+
+                    <p></p>
+                    { messages }
                     <p></p>
                 </div>
             )

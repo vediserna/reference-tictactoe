@@ -1,13 +1,18 @@
 module.exports=function(injected){
-    class SocketIoEventPort{
-        constructor(socketIo, messageRouter, socketVerb){
+    const socketIo = injected('io');
+    const messageRouter = injected('messageRouter');
+    return {
+        dispatchThroughIo(routingKey, socketVerb, conditionFn){
             socketVerb = socketVerb || 'eventIssued';
-            messageRouter.on('*', (event)=>{
-                console.debug("Emitting event on socket io bus", event);
-                socketIo.emit(socketVerb, event);
+            conditionFn = conditionFn || function(){
+                return true;
+            };
+            messageRouter.on(routingKey, (messageObj)=>{
+                if(conditionFn(messageObj)){
+                    socketIo.emit(socketVerb, messageObj);
+                }
             })
         }
-    }
-    return SocketIoEventPort;
+    };
 };
 

@@ -1,4 +1,4 @@
-const IncomingSocketMessageDispatcher = require('./incoming-socket-message-dispatcher')(inject({}));
+const IncomingSocketMessageDispatcher = require('./incoming-socket-message-dispatcher');
 
 describe('socket message dispatcher', function(){
     var socket;
@@ -27,10 +27,15 @@ describe('socket message dispatcher', function(){
         };
 
         session = {sessionId: 99};
-        messageDispatcher = new IncomingSocketMessageDispatcher('issueCommand', socket, router, session);
+        messageDispatcher = IncomingSocketMessageDispatcher(inject(
+            {
+                socketIoVerb:'issueCommand',
+                messageRouter: router
+            }));
+        messageDispatcher.startDispatching(socket, session);
     });
 
-    it('should subscribe to commandIssued messages',function(){
+    fit('should subscribe to commandIssued messages',function(){
         expect(socket._subscriptions['issueCommand']).toBeTruthy();
     });
 

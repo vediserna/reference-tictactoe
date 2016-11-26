@@ -1,12 +1,12 @@
-// TODO REFACTOR!
-
 module.exports=function(injected){
     const generateUUID=injected('generateUUID');
+    const commandRouter=injected('commandRouter');
+    const eventRouter=injected('eventRouter');
 
-    class ChatHandler{
-        constructor(commandRouter, eventPortRouter){
+    return {
+        startHandling(){
             commandRouter.on('chatCommand', function(commandMessage){
-                eventPortRouter.routeMessage({
+                eventRouter.routeMessage({
                     eventId:generateUUID(),
                     type:'chatMessageReceived',
                     message:commandMessage.message,
@@ -15,6 +15,5 @@ module.exports=function(injected){
             })
         }
     }
-    return ChatHandler;
 };
 

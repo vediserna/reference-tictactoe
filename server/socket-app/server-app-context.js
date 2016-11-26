@@ -1,5 +1,6 @@
 const generateUUID = require('client/src/common/framework/uuid');
 const IncomingSocketMessageDispatcher = require('client/src/common/framework/incoming-socket-message-dispatcher');
+const ChatHandlerModule = require('./chat/chat-handler');
 const eventRouter = require('client/src/common/framework/message-router')();
 const commandRouter = require('client/src/common/framework/message-router')();
 const queryRouter = require('client/src/common/framework/message-router')();
@@ -25,7 +26,6 @@ module.exports=function(injected){
         messageRouter:eventRouter
     }));
 
-    socketIoEventPort.dispatchThroughIo('*', 'eventIssued');
 
     require('./user-session-manager')(inject({
         io,
@@ -35,11 +35,12 @@ module.exports=function(injected){
         queryRouter
     }));
 
-    const ChatHandler = require('./chat-handler')(inject({
-        generateUUID
+    const chatHandler = ChatHandlerModule(inject({
+        generateUUID,
+        commandRouter,
+        eventRouter
     }));
 
-    const chatHandler = new ChatHandler(commandRouter, eventRouter);
 
     const commandRepo = CommandRepo(
         inject({
@@ -55,6 +56,8 @@ module.exports=function(injected){
             commandRouter
         }));
 
+    socketIoEventPort.dispatchThroughIo('*', 'eventIssued');
+    chatHandler.startHandling();
 
     return {
         chatHandler,

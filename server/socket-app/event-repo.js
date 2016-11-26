@@ -30,7 +30,7 @@ module.exports=function(injected){
             });
 
         },
-        retrieveChatHistory:function(cmdObj, errCb, successCb){
+        retrieveEventLog:function(cmdObj, errCb, successCb){
 
             dbPool.connect(function(err, connection, done) {
                 if(err) {
@@ -56,7 +56,7 @@ module.exports=function(injected){
     };
 
     commandRouter.on('requestChatHistory', function(requestCommand){
-        repo.retrieveChatHistory(requestCommand, function(err){
+        repo.retrieveEventLog(requestCommand, function(err){
             queryRouter.routeMessage({type:"chatHistoryResult", requestCommand, requestError:err})
         }, function(resultSet){
             var events = _.map(resultSet.rows, function(row){
@@ -68,7 +68,6 @@ module.exports=function(injected){
 
 
     eventRouter.on('*', function(eventObj){
-        console.debug("Got event through event router...");
         repo.storeEvent(eventObj, function(err){
             console.error('Error storing event object: ' + err)
         }, function(){

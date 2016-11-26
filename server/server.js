@@ -15,12 +15,10 @@ function serverModule(injected) {
 
     const dbConfig = DbConfig['dev'];
 
-    const ChatAppContext = require('./socket-app/chat-app-context');
+    const ChatAppContext = require('./socket-app/server-app-context');
 
     return {
         startServer: function(CALLBACK){
-
-            console.log("Starting server");
 
             const CookieParser = require('cookie-parser');
             var app = Express();
@@ -57,7 +55,6 @@ function serverModule(injected) {
             var io = SocketIo(server);
 
           //  SocketSessionManager(inject({io}));
-            console.debug("Setting up chat app context");
             ChatAppContext(inject({io, dbPool}));
             console.debug("Done setting up context");
 

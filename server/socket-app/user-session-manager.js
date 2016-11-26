@@ -3,7 +3,6 @@ module.exports=function(injected){
     const io = injected('io');
     const incomingSocketMessageDispatcher = injected('incomingSocketMessageDispatcher');
     const OutgoingSocketIoMessagePort = injected('OutgoingSocketIoMessagePort');
-    const commandRouter = injected('commandRouter');
     const queryRouter = injected('queryRouter');
 
     var clientId = 0;

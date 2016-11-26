@@ -61,3 +61,14 @@ cd client
 npm run test
 ```
 
+## Notes
+
+The main emphasis in this sample application is on object decomposition and testability, achieved with fine-grained
+objects wired together with aggressive use of dependency injection. The architecture style used is fully message based
+using Command Query Responsibility Segregation (CQRS) with event sourcing. This is an appropriate architecture for
+many classes of applications, such as where synchronizing views of multiple users is an important concern, and where
+achieving near-linear scaling of servers in clustered environments is a concern.
+
+Note that transaction support, error handling and logging are incomplete, and many other details that would be required in
+production-ready clustered applications are not present. One such is persistent user sessions.
+

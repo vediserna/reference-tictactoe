@@ -37,10 +37,6 @@ module.exports=function(injected){
             io.emit('userChanged', connected[clientId])
         });
 
-        socket.on('sendMessage', function(messageObj){
-            io.emit('messageReceived', {clientId, sender: connected[clientId],  message: messageObj.message })
-        });
-
         const queryResultPort = OutgoingSocketIoMessagePort
         (inject({
             io:socket,

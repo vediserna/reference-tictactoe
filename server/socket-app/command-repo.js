@@ -5,7 +5,7 @@ module.exports=function(injected){
 
     var repo = {
 
-        storeEvent:function(cmdObj, errCb, successCb){
+        storeCommand:function(cmdObj, errCb, successCb){
 
             dbPool.connect(function(err, connection, done) {
                 if(err) {
@@ -31,7 +31,7 @@ module.exports=function(injected){
     };
 
     commandRouter.on('*', function(commandObj){
-        repo.storeEvent(commandObj, function(err){
+        repo.storeCommand(commandObj, function(err){
             console.error('Error storing command object: ' + err)
         }, function(){
             console.debug('Command stored');

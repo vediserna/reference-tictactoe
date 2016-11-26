@@ -9,6 +9,7 @@ module.exports=function(injected){
             };
             messageRouter.on(routingKey, (messageObj)=>{
                 if(conditionFn(messageObj)){
+//                    console.debug("Emitting " + socketVerb + " ->", messageObj);
                     socketIo.emit(socketVerb, messageObj);
                 }
             })

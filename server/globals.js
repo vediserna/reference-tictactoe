@@ -2,7 +2,7 @@
 // here. Only low-level libraries which do not handle IO should be available in global namespace,
 // the purpose being to decrease verbosity of code where those libraries are used.
 
-console.log(process.env.NODE_PATH);
+// console.log(process.env.NODE_PATH);
 
 global._ = require('lodash');
 

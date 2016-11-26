@@ -21,7 +21,8 @@
     "socket.io": "^1.5.1"
   },
   "devDependencies": {
-    "jest": "^17.0.3"
+    "jest": "^17.0.3",
+    "socket.io-client": "^1.6.0"
   },
   "jest": {
     "verbose": true,
@@ -41,7 +42,8 @@
     "createbuild": "[ -d build ] || mkdir build ",
     "build": "export NODE_PATH=. && npm run clean && npm run createbuild && npm run buildclient && mv client/build build/static && cp -R server build/server && mkdir -p build/client/src && cp -r client/src/common build/client/src && cp run.js build",
     "test": "export NODE_PATH=. && nodemon ./node_modules/.bin/jest",
+    "testapi": "export NODE_PATH=. && ./node_modules/.bin/jest --config apitest/functional-jest.json",
     "dev": "./node_modules/.bin/parallelshell 'npm run start' 'npm run startclient'",
-    "migratedb":"db-migrate --config ./server/database.json --migrations-dir ./server/migrations up"
+    "migratedb": "db-migrate --config ./server/database.json --migrations-dir ./server/migrations up"
   }
 }

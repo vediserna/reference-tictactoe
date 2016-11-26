@@ -1,6 +1,6 @@
-import inject from 'common/framework/inject';
-import ioModule from '_test/fakeIo';
-import webSocketModule from './webSocket';
+const inject = require('common/framework/inject');
+const ioModule = require('_test/fakeIo');
+const webSocketModule = require('./webSocket');
 const io = ioModule();
 
 

@@ -40,7 +40,7 @@ module.exports = function (settings) {
                         try {
                             listener(event);
                         } catch (e) {
-                            console.error("Error while routing ", event, " to ", listener);
+                            console.error("Error while routing ", event, " to ", listener, ": ", e);
                             throw e;
                         }
                     });

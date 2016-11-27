@@ -11,7 +11,6 @@ describe('socket message dispatcher', function(){
         socket = {
             _subscriptions: {},
             on: function (verb, callback) {
-                console.debug("Subscribe ", verb);
                 socket._subscriptions[verb] = callback;
             },
             removeListener:function(verb, callback){

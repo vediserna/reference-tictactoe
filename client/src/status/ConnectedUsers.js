@@ -44,7 +44,6 @@ export default function (injected) {
                 });
             });
             socket.on('usersConnected', (users)=> {
-                console.debug("users", JSON.stringify(users));
                 this.setState({users: users});
             });
 

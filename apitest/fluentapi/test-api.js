@@ -1,12 +1,12 @@
 module.exports=function(injected){
 
-    const io = require('socket.io-client');
-    const RoutingContext = require('../../client/src/routing-context');
-    const generateUUID = require('../../client/src/common/framework/uuid');
+
+    const io = injected('io');
+    const RoutingContext = injected('RoutingContext');
 
     var connectCount =0;
 
-    function userAPI(){
+    function testAPI(){
         var waitingFor=[];
         var commandId=0;
 
@@ -17,28 +17,6 @@ module.exports=function(injected){
 
         connectCount++;
         const me = {
-            expectUserAck:(cb)=>{
-                waitingFor.push("expectUserAck");
-                routingContext.socket.on('userAcknowledged', function(ackMessage){
-                    expect(ackMessage.clientId).not.toBeUndefined();
-                    waitingFor.pop();
-                });
-                return me;
-            },
-            sendChatMessage:(message)=>{
-                var cmdId = generateUUID();
-                routingContext.commandRouter.routeMessage({commandId:cmdId, type:"chatCommand", message });
-                return me;
-            },
-            expectChatMessageReceived:(message)=>{
-                waitingFor.push("expectChatMessageReceived");
-                routingContext.eventRouter.on('chatMessageReceived', function(chatMessage){
-                    if(chatMessage.message===message){
-                        waitingFor.pop();
-                    }
-                });
-                return me;
-            },
             cleanDatabase:()=>{
                 var cmdId = commandId++;
                 routingContext.commandRouter.routeMessage({commandId:cmdId, type:"cleanDatabase"});
@@ -70,8 +48,7 @@ module.exports=function(injected){
 
         };
         return me;
-
     }
 
-    return userAPI;
+    return testAPI;
 };

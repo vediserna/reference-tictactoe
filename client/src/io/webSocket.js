@@ -3,6 +3,6 @@ module.exports= function webSocket(injected){
     const socketURI = injected("socketURI");
 
     var socket = io.connect(socketURI);
-    console.debug("Connected socket............................");
+//    console.debug("Connected socket io " + socketURI);
     return socket;
 }

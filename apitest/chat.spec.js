@@ -1,12 +1,28 @@
-const userAPI = require('./fluentapi/user-api')(inject({
+const io = require('socket.io-client');
+const RoutingContext = require('../client/src/routing-context');
+var UserAPI = require('./fluentapi/user-api');
+var TestAPI = require('./fluentapi/test-api');
 
+const userAPI = UserAPI(inject({
+    io,
+    RoutingContext
+}));
+
+const testAPI = TestAPI(inject({
+    io,
+    RoutingContext
 }));
 
 describe('User chat API', function(){
     var user;
 
-    beforeEach(function(){
-        user = userAPI();
+    beforeEach(function(done){
+        var testapi = testAPI();
+        testapi.waitForCleanDatabase().cleanDatabase().then(()=>{
+            testapi.disconnect();
+            user = userAPI();
+            done();
+        });
     });
 
     afterEach(function(){
@@ -14,45 +30,16 @@ describe('User chat API', function(){
     });
 
     it('should get user session information on connect',function(done){
+        // There is a weak race condition here. Why ?
         user.expectUserAck().then(done);
     });
 
     it('should receive chat message back after sending chat command',function(done){
-        user.sendChatMessage('message one ')
-            .expectChatMessageReceived('message one ')
+        // There is no race condition here. Why ?
+        user.expectChatMessageReceived('message one ')
+            .sendChatMessage('message one ')
             .then(done);
     });
 
 });
 
-
-describe('User chat load test', function(){
-
-    it('should connect one hundred users with each one sending a message',function(done){
-
-        var startMillis = new Date().getTime();
-
-        var user;
-        var users=[];
-        for(var i=0; i<100; i++){
-            user = userAPI("User#" + i);
-            users.push(user);
-            user.sendChatMessage('Message ' + i);
-        }
-
-        user = userAPI("Final user");
-        user.sendChatMessage('TWO')
-            .expectChatMessageReceived('TWO')
-            .then(function(){
-                user.disconnect();
-                _.each(users, function(usr){
-                    usr.disconnect();
-                });
-
-                var endMillis = new Date().getTime();
-                console.log("Test took " + (endMillis - startMillis) + "ms to execute");
-
-                done();
-            });
-    });
-});

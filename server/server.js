@@ -56,7 +56,6 @@ function serverModule(injected) {
 
           //  SocketSessionManager(inject({io}));
             ChatAppContext(inject({io, dbPool}));
-            console.debug("Done setting up context");
 
         }
     }

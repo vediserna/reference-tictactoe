@@ -6,6 +6,10 @@ const commandRouter = require('client/src/common/framework/message-router')();
 const queryRouter = require('client/src/common/framework/message-router')();
 const CommandRepo = require('./command-repo');
 const EventRepo = require('./event-repo');
+
+const APITestBackdoor = require('./apitest-dbbackdoor');
+
+
 const OutgoingSocketIoMessagePort = require('client/src/common/framework/outgoing-socket-io-message-port');
 
 module.exports=function(injected){
@@ -56,12 +60,19 @@ module.exports=function(injected){
             commandRouter
         }));
 
+    const apiTestBackdoor = APITestBackdoor(inject({
+        dbPool,
+        eventRouter,
+        commandRouter
+    }));
+
     socketIoEventPort.dispatchThroughIo('*', 'eventIssued');
     chatHandler.startHandling();
 
     return {
         chatHandler,
         commandRepo,
-        eventRepo
+        eventRepo,
+        apiTestBackdoor
     };
 };

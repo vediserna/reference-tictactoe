@@ -6,6 +6,9 @@ export default function () {
             return { // socket
                 on: function (eventName) {
 
+                },
+                emit:function(){
+
                 }
             }
         }

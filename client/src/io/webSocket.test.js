@@ -1,15 +1,16 @@
-const inject = require('common/framework/inject');
-const ioModule = require('_test/fakeIo');
-const webSocketModule = require('./webSocket');
-const io = ioModule();
+import inject from 'common/framework/inject';
+import fakeIoModule from '_test/fakeIo';
+import webSocketModule from './webSocket';
 
 
 describe("webSocket", function () {
 
     var socket;
     var socketURI = 'http://localhost:8080/';
+    var io;
 
     beforeEach(function () {
+        io = fakeIoModule();
         socket = webSocketModule(inject({io, socketURI}));
     });
 

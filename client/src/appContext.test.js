@@ -1,11 +1,17 @@
 import appContextModule from  'appContext';
-import ioModule from '_test/fakeIo';
+import fakeIoModule from '_test/fakeIo';
 
 describe('app context initialization', function () {
 
     it('should load app context without throwing', function () {
-        const io = ioModule();
-        appContextModule(inject({io, env:"test"}));
+        const io = fakeIoModule();
+        appContextModule(inject({
+            io,
+            env:"test"
+        }));
+
+        //TODO Assert on io messages emitted when bootstrapping client.
+
     });
 
 });

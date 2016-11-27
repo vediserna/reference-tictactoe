@@ -66,7 +66,6 @@ module.exports=function(injected){
         });
     });
 
-
     eventRouter.on('*', function(eventObj){
         repo.storeEvent(eventObj, function(err){
             console.error('Error storing event object: ' + err)
@@ -76,6 +75,4 @@ module.exports=function(injected){
     });
 
     return repo
-
-
 };

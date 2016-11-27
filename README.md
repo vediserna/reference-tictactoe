@@ -61,6 +61,21 @@ cd client
 npm run test
 ```
 
+
+To run API tests, simulating client calls to server socket-io api:
+
+```
+npm run apitest
+```
+
+
+To run API load tests, simulating client load on server socket-io api:
+
+```
+npm run loadtest
+```
+
+
 ## Notes
 
 The main emphasis in this sample application is on object decomposition and testability, achieved with fine-grained

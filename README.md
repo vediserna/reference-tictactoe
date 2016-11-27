@@ -50,6 +50,7 @@ npm run test
 In another terminal window:
 ```
 cd client
+npm install
 npm run start
 ```
 

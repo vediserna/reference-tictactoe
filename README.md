@@ -53,7 +53,8 @@ cd client
 npm run start
 ```
 
-At this point you should be able to point your browser to http://localhost:8080/
+At this point you should see the HGOP intro page open in your browser.
+If not, you should be able to point your browser to http://localhost:3000 and open it.
 
 To run client tests in watch mode:
 ```

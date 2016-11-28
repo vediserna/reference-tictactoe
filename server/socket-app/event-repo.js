@@ -62,7 +62,10 @@ module.exports=function(injected){
             var events = _.map(resultSet.rows, function(row){
                 return JSON.parse(row.json);
             });
+
+            // Can you do better than using lodash filter here? Directly in the query perhaps?
             events = _.filter(events, (ev)=>{return ev.type==="chatMessageReceived"});
+
             queryRouter.routeMessage({type:"chatHistoryResult", requestCommand, events})
         });
     });

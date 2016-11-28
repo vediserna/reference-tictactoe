@@ -62,6 +62,7 @@ module.exports=function(injected){
             var events = _.map(resultSet.rows, function(row){
                 return JSON.parse(row.json);
             });
+            events = _.filter(events, (ev)=>{return ev.type==="chatMessageReceived"});
             queryRouter.routeMessage({type:"chatHistoryResult", requestCommand, events})
         });
     });

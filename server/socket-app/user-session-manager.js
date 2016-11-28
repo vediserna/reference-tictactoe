@@ -48,8 +48,6 @@ module.exports=function(injected){
         };
 
         queryResultPort.dispatchThroughIo('*', 'queryResult', dispatchOnlyToOriginFilter);
-
-
     }
 
 

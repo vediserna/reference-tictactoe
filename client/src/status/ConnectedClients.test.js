@@ -16,7 +16,6 @@ describe("Connected socket clients component", function () {
     };
     var ConnectedClients;
 
-
     beforeEach(function () {
         ConnectedClients = ConnectedClientsModule(inject({
             socket

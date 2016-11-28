@@ -33,6 +33,7 @@ module.exports=function(injected){
             expectChatMessageReceived:(message)=>{
                 waitingFor.push("expectChatMessageReceived");
                 routingContext.eventRouter.on('chatMessageReceived', function(chatMessage){
+                    expect(chatMessage.sender).not.toBeUndefined();
                     if(chatMessage.message===message){
                         waitingFor.pop();
                     }

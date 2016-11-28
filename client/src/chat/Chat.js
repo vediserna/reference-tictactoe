@@ -45,12 +45,12 @@ export default function(injected){
             };
             eventRouter.on('chatMessageReceived', chatMessageReceived);
             queryRouter.on('chatHistoryResult', (resultMessage)=>{
-                console.debug("resultMessage", resultMessage);
                 _.each(resultMessage.events, function(event){
-                    chatMessageReceived(event);
+                    if(event.type==='chatMessageReceived'){
+                        chatMessageReceived(event);
+                    }
                 });
             });
-
             commandPort.routeMessage({commandId:generateUUID(), type:"requestChatHistory"})
         }
         render(){

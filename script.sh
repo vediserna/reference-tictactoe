@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo Cleaning...
-rm -rf ./build
+# -rf ./build
 
 if [ -z "$GIT_COMMIT" ]; then
   export GIT_COMMIT=$(git rev-parse HEAD)

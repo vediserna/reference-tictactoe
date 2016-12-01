@@ -1,12 +1,15 @@
-FROM node
-ENV NODE_PATH /bin/bash
-RUN mkdir -p /tictactoe
-WORKDIR /tictactoe
+FROM node:6.9.1
 
-COPY package.json .
-RUN npm-install --silent
+#ENV NODE_PATH /tictactoe
 
-COPY ./build/ .
+#RUN mkdir -p /tictactoe
+#WORKDIR /tictactoe
 
-EXPOSE 3000
+#COPY package.json /tictactoe
+#RUN npm-install --silent
+
+COPY . /tictactoe
+RUN npm install --silent
+
+EXPOSE 8080
 CMD ["node","run.js"]

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo Cleaning...
-# -rf ./build
+-rf ./build
 
 if [ -z "$GIT_COMMIT" ]; then
   export GIT_COMMIT=$(git rev-parse HEAD)
@@ -13,7 +13,7 @@ export GITHUB_URL=$(echo $GIT_URL | rev | cut -c 5- | rev)
 
 
 echo Building app
-npm build
+npm run build
 
 rc=$?
 if [[ $rc != 0 ]] ; then

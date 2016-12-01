@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+    web:
+        image: vediserna/tictactoe
+        ports:
+            -"8080:8080"
+            -"3000:3000"
+#        depends_on:
+#            - postgres
+    db:
+        image: postgres

@@ -1,12 +1,16 @@
 version: '2'
 
 services:
-    web:
-        image: vediserna/tictactoe
-        ports:
-            -"8080:8080"
-            -"3000:3000"
-#        depends_on:
-#            - postgres
-    db:
-        image: postgres
+  server:
+    image: vediserna/tictactoe:${GIT_COMMIT}
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=postgres
+            

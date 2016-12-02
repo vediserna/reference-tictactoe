@@ -4,11 +4,11 @@ ifndef TAG
 endif
 ifndef PROJECT_NAME
   #Change to the name of you project
-	PROJECT_NAME := intro-docker
+	PROJECT_NAME := tictactoe
 endif
 ifndef USERNAME
   #Change  to your dockerhub username
-	USERNAME := andrimar
+	USERNAME := vediserna
 endif
 ifndef IMAGE_TAG
   #Change <username> to your dockerhub username

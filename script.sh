@@ -39,20 +39,18 @@ cat > ./build/public/version.html << _EOF_
 </body>
 _EOF_
 
+cat > ./.env << _EOF_
+GIT_COMMIT=$GIT_COMMIT
+_EOF_
 
 cp ./Dockerfile ./build/
 cp ./dockerrunscript.sh ./build/
-cp ./docker-compose.yaml ./build/
 
 cd build
 
 echo Building docker image
 
 sudo docker build -t vediserna/tictactoe:$GIT_COMMIT .
-
-cat > ./.env << _EOF_
-GIT_COMMIT=$GIT_COMMIT
-_EOF_
 
 rc=$?
 if [[ $rc != 0 ]] ; then

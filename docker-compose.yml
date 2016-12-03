@@ -1,5 +1,4 @@
 version: '2'
-
 services:
   server:
     image: vediserna/tictactoe:${GIT_COMMIT}

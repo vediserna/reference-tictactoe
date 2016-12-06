@@ -65,4 +65,16 @@ if [[ $rc != 0 ]] ; then
     exit $rc
 fi
 
+echo "Moving .env folder"
+scp -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ~/Documents/reference-tictactoe/.env ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
+
+
+echo "Moving docker-compose.yml"
+scp -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ~/Documents/reference-tictactoe/docker-compose.yml ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
+
+export GIT_COMMIT
+
+echo "Entering AWS computer"
+ssh -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com < ../provisioning/amazonscript.sh
+
 echo "Done"

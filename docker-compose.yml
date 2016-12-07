@@ -1,6 +1,7 @@
 version: '2'
 services:
   server:
+    #run the version connected to the newest git commit hash as a tag
     image: vediserna/tictactoe:${GIT_COMMIT}
     ports:
       - "80:8080"
@@ -12,6 +13,7 @@ services:
     ports:
       - "5432:5432"
     environment:
+      #Environment variables for the postgres database
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_USER=postgres
             

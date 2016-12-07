@@ -4,11 +4,12 @@ echo Cleaning...
 -rf ./build
 
 if [ -z "$GIT_COMMIT" ]; then
+  echo "getting values for GIT_COMMIT and GIT_URL"
   export GIT_COMMIT=$(git rev-parse HEAD)
   export GIT_URL=$(git config --get remote.origin.url)
 fi
 
-# Remove .git from url in order to get https link to repo (assumes https url for GitHub)
+echo "Removing .git from url in order to get https link to repo"
 export GITHUB_URL=$(echo $GIT_URL | rev | cut -c 5- | rev)
 
 
@@ -21,11 +22,12 @@ if [[ $rc != 0 ]] ; then
     exit $rc
 fi
 
-
+echo "Saving GIT_COMMIT value to githash.txt"
 cat > ./build/githash.txt <<_EOF_
 $GIT_COMMIT
 _EOF_
 
+echo "Writing Git information(GITHUB_URL + GIT_COMMIT) to version.html"
 cat > ./build/public/version.html << _EOF_
 <!doctype html>
 <head>
@@ -39,17 +41,19 @@ cat > ./build/public/version.html << _EOF_
 </body>
 _EOF_
 
+echo "saving GIT_COMMIT env"
 cat > ./.env << _EOF_
 GIT_COMMIT=$GIT_COMMIT
 _EOF_
 
+echo "Copying Dockerfile to build folder so it will be in the docker container"
 cp ./Dockerfile ./build/
+eccho "Copying dockerrunscript.sh to build folder so it will be in the docker container"
 cp ./dockerrunscript.sh ./build/
 
 cd build
 
-echo Building docker image
-
+echo "Building docker image"
 sudo docker build -t vediserna/tictactoe:$GIT_COMMIT .
 
 rc=$?
@@ -58,6 +62,7 @@ if [[ $rc != 0 ]] ; then
     exit $rc
 fi
 
+echo "Pushing docker image to Dockerhub"
 sudo docker push vediserna/tictactoe:$GIT_COMMIT
 rc=$?
 if [[ $rc != 0 ]] ; then
@@ -65,16 +70,14 @@ if [[ $rc != 0 ]] ; then
     exit $rc
 fi
 
-echo "Moving .env folder"
+echo "Copying .env folder to aws so GIT_COMMIT variable exists there with correct value"
 scp -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ~/Documents/reference-tictactoe/.env ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
 
 
-echo "Moving docker-compose.yml"
+echo "Copying docker-compose.yml to aws"
 scp -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ~/Documents/reference-tictactoe/docker-compose.yml ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
 
-export GIT_COMMIT
-
-echo "Entering AWS computer"
+echo "Running amazonscript.sh on aws"
 ssh -i ~/Documents/keys/my-ec2-key-pair-vediserna.pem ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com < ../provisioning/amazonscript.sh
 
 echo "Done"

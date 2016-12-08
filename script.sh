@@ -54,7 +54,7 @@ cp ./dockerrunscript.sh ./build/
 cd build
 
 echo "Building docker image"
-docker build -t vediserna/tictactoe:$GIT_COMMIT .
+sudo docker build -t vediserna/tictactoe:$GIT_COMMIT .
 
 rc=$?
 if [[ $rc != 0 ]] ; then
@@ -63,7 +63,7 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo "Pushing docker image to Dockerhub"
-docker push vediserna/tictactoe:$GIT_COMMIT
+sudo docker push vediserna/tictactoe:$GIT_COMMIT
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker push failed " $rc

@@ -55,7 +55,7 @@ cd build
 
 echo "Building docker image"
 docker build -t vediserna/tictactoe:$GIT_COMMIT .
-
+echo "GIT COMMIT IS $GIT_COMMIT"
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker build failed " $rc

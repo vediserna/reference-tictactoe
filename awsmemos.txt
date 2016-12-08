@@ -5,3 +5,7 @@ public IP
 ssh -i "my-ec2-key-pair-vediserna.pem" ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com
 
 til að tengjast tölvunni á amazon
+
+
+sudo usermod -aG docker jenkins
+sudo su jenkins

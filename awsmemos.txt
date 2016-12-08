@@ -11,3 +11,5 @@ sudo su jenkins
 
 ubuntu@82.221.49.116
 cVK2DxYGmkP3D
+
+scp -i  ~/Documents/reference-tictactoe/docker-compose.yml ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.

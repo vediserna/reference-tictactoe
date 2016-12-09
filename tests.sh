@@ -16,4 +16,4 @@ if [[ $rc != 0 ]] ; then
     echo "npm run test failed with exit code " $rc
     exit $rc
 fi
-
+cd ..

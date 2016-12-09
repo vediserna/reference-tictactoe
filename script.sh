@@ -1,4 +1,13 @@
 #!/bin/bash
+echo "npm install in root.."
+npm install --silent
+cd client
+echo "npm install in client.."
+npm install --silent
+cd ..
+
+echo "Testing..."
+./tests.sh
 
 echo Cleaning...
 -rf ./build
@@ -11,7 +20,6 @@ fi
 
 echo "Removing .git from url in order to get https link to repo"
 export GITHUB_URL=$(echo $GIT_URL | rev | cut -c 5- | rev)
-
 
 echo Building app
 npm run build
@@ -55,7 +63,7 @@ cd build
 
 echo "Building docker image"
 docker build -t vediserna/tictactoe:$GIT_COMMIT .
-echo "GIT COMMIT IS $GIT_COMMIT"
+
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker build failed " $rc

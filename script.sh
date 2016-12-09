@@ -4,8 +4,6 @@ docker stop pg2
 docker rm pg2
 docker run -p 5432:5432 --name pg2 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
-npm run migratedb-dev
-
 echo "     _____________________ "
 echo "*~*~| Running npm install |~*~*"
 echo "    |_____________________|"
@@ -16,6 +14,8 @@ cd client
 echo "npm install in client.."
 npm install --silent
 cd ..
+
+npm run migratedb-dev
 
 echo "     _________________"
 echo "*~*~|  Running tests  |~*~*"

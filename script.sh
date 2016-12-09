@@ -71,10 +71,10 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo "Copying .env folder to aws so GIT_COMMIT variable exists there with correct value"
-scp -i ~/my-ec2-key-pair-vediserna.pem ~/workspace/Commit\ Stage\ Job/.env ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
+scp -i ~/my-ec2-key-pair-vediserna.pem ~/workspace/hgop_tictactoe/.env ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
 
 echo "Copying docker-compose.yml to aws"
-scp -i ~/my-ec2-key-pair-vediserna.pem ~/workspace/Commit\ Stage\ Jobdocker-compose.yml ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
+scp -i ~/my-ec2-key-pair-vediserna.pem ~/workspace/hgop_tictactoe/docker-compose.yml ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com:~/.
 
 echo "Running amazonscript.sh on aws"
 ssh -i ~/my-ec2-key-pair-vediserna.pem ec2-user@ec2-54-191-32-51.us-west-2.compute.amazonaws.com < ../provisioning/amazonscript.sh

@@ -8,6 +8,6 @@ echo "Updating images in AWS computer"
 docker build -t vediserna/tictactoe:$GIT_COMMIT .
 
 echo "Running docker-compose up"
-docker-compose up
+docker-compose up -d
 
 exit

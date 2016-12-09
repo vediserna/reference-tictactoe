@@ -1,4 +1,9 @@
 #!/bin/bash
+echo "Running the postgres docker image"
+docker run -p 5432:5432 --name pg2 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+npm run migratedb-dev
+
 echo "npm install in root.."
 npm install --silent
 cd client
@@ -6,7 +11,9 @@ echo "npm install in client.."
 npm install --silent
 cd ..
 
-echo "Testing..."
+echo "     _________________"
+echo "*~*~|  Running tests  |~*~*"
+echo "    |_________________|"
 ./tests.sh
 
 echo Cleaning...

@@ -1,5 +1,5 @@
 #!/bin/bash
-npm install -g nodemon
+npm install -g --force nodemon
 npm install -g create-react-app
 
 echo "Removing postgres image and running it again"

@@ -1,6 +1,6 @@
 #!/bin/bash
-npm install -g --force nodemon
-npm install -g create-react-app
+npm install nodemon
+npm install create-react-app
 
 echo "Removing postgres image and running it again"
 docker stop pg2

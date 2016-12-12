@@ -17,7 +17,7 @@ echo "    |_________________|"
 
 cd client
 echo "Running client tests..."
-npm run test
+npm run citest
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "npm run test failed with exit code " $rc

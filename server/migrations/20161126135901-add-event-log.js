@@ -16,6 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db,callback) {
   db.createTable('eventlog', {
+    aggregate_id:{ type:'string' },
     timestamp:{ type:'datetime'},
     id: { type: 'string', primaryKey: true },
     json: 'string'

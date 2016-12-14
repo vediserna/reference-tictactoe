@@ -244,7 +244,7 @@ describe('Place move command', function () {
             timeStamp: "2014-12-02T11:29:29",
             side:'O'
         }, {
-            type: "PlaceMove",
+            type: "MovePlaced",
             user: {
                 userName: "TheGuy"
             },
@@ -266,15 +266,15 @@ describe('Place move command', function () {
         };
 
         then = [
-            {
-                type: "IllegalMove",
-                user: {
-                    userName: "Gummi"
-                },
-                name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:31:29",
-                block: 0
-            }
+        {
+            type: "IllegalMove",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:31:29",
+            block: 0
+        }
         ];
     });    
 });

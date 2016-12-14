@@ -13,9 +13,9 @@
 * Emits NotYourMove event if player tries to make a move out of turn
 * Emits GameWon event if player wins
 * Does not emit GameDraw event if game is won on last move
-#TODO:
 * Emits GameDraw if neither player wins
 
+#TODO:
 ### Game winning scenarios
 * Emit GameWon on vertical win
 * Emits GameWon on horizontal win

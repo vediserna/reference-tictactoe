@@ -12,8 +12,8 @@
 * Emits MovePlaced event if preconditions are met(It is players move and block is not occupied)
 * Emits NotYourMove event if player tries to make a move out of turn
 * Emits GameWon event if player wins
-#TODO:
 * Does not emit GameDraw event if game is won on last move
+#TODO:
 * Emits GameDraw if neither player wins
 
 ### Game winning scenarios

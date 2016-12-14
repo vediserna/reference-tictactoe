@@ -11,7 +11,7 @@
 * Emits IllegalMove event when a square is already occupied
 * Emits MovePlaced event if preconditions are met(It is players move and block is not occupied)
 * Emits NotYourMove event if player tries to make a move out of turn
-#TODO:
 * Emits GameWon event if player wins
+#TODO:
 * Does not emit GameDraw event if game is won on last move
 * Emits GameDraw if neither player wins

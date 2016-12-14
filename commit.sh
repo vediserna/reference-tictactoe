@@ -56,7 +56,7 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo "Pushing docker image to Dockerhub"
-sudo docker push vediserna/tictactoe:$GIT_COMMIT
+docker push vediserna/tictactoe:$GIT_COMMIT
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker push failed " $rc

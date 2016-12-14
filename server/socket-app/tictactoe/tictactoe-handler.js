@@ -45,6 +45,15 @@ module.exports = function(injected){
                     "PlaceMove": function(cmd){
 
                         // Check here for conditions which prevent command from altering state
+                        var events = [{
+                            gameId: cmd.gameId,
+                            type: "MovePlaced",
+                            user: cmd.user,
+                            name: cmd.name,
+                            timeStamp: cmd.timeStamp,
+                            block: 0
+                        }];
+
 
                         gameState.processEvents(events);
 

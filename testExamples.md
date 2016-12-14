@@ -8,8 +8,8 @@
 
 ### Place move commands
 * Emits MovePlaced event on first game move
-#TODO:
 * Emits IllegalMove event when a square is already occupied
+#TODO:
 * Emits NotYourMove event if player tries to make a move out of turn
 * Emits GameWon event if player wins
 * Does not emit GameDraw event if game is won on last move

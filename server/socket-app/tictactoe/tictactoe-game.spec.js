@@ -211,7 +211,8 @@ describe('Place move command', function () {
             },
             name: "TheFirstGame",
             timeStamp: "2014-12-02T11:30:29",
-            block: 0
+            block: 0,
+            side: 'X'
         };
 
         then = [
@@ -222,7 +223,8 @@ describe('Place move command', function () {
                 },
                 name: "TheFirstGame",
                 timeStamp: "2014-12-02T11:30:29",
-                block: 0
+                block: 0,
+                side: 'X'
             }
         ];
     });
@@ -250,7 +252,8 @@ describe('Place move command', function () {
             },
             name: "TheFirstGame",
             timeStamp: "2014-12-02T11:30:29",
-            block: 0
+            block: 0,
+            side: 'X'
         }
         ];
 
@@ -262,7 +265,8 @@ describe('Place move command', function () {
             },
             name: "TheFirstGame",
             timeStamp: "2014-12-02T11:31:29",
-            block: 0
+            block: 0,
+            side: 'O'
         };
 
         then = [
@@ -273,8 +277,53 @@ describe('Place move command', function () {
             },
             name: "TheFirstGame",
             timeStamp: "2014-12-02T11:31:29",
-            block: 0
+            block: 0,
+            side: 'O'
         }
         ];
-    });    
+    });   
+
+    it('should emit Not your move if attempting to make move out of turn', function () {
+        given = [{
+                type: "GameCreated",
+                user: {
+                    userName: "TheGuy"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:29:29"
+            }, {
+                type: "JoinGame",
+                user: {
+                    userName: "Gummi"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:29:29",
+                side:'O'
+            }];
+
+            when =
+            {
+                type: "PlaceMove",
+                user: {
+                    userName: "Gummi"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:31:29",
+                block: 0,
+                side: 'O'
+            };
+
+            then = [
+            {
+                type: "NotYourMove",
+                user: {
+                    userName: "Gummi"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:31:29",
+                block: 0,
+                side: 'O'
+            }
+        ];
+    });   
 });

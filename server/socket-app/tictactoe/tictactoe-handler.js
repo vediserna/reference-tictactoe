@@ -49,18 +49,20 @@ module.exports = function(injected){
                                 user: cmd.user,
                                 name: cmd.name,
                                 timeStamp: cmd.timeStamp,
-                                block: cmd.block
+                                block: cmd.block,
+                                side: cmd.side
                             }];
-                        // Check here for conditions which prevent command from altering state
-                        if(!gameState.blockFree(events[0].block)) {
-                            events[0].type = "IllegalMove";
+                        if(gameState.isItMyMove(cmd.side)) {
+                            if(!gameState.blockFree(events[0].block)) {
+                                events[0].type = "IllegalMove";
+                            } else {
+                                events[0].type = "MovePlaced";
+                            }
                         } else {
-                            events[0].type = "MovePlaced";
+                            events[0].type = "NotYourMove";
                         }
 
                         gameState.processEvents(events);
-
-                        // Check here for conditions which may warrant additional events to be emitted.
                         eventHandler(events);
                     }
                 };

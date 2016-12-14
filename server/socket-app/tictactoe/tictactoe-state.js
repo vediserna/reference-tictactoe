@@ -5,6 +5,7 @@ module.exports = function (injected) {
     return function (history) {
         var gameFullvariable = false;
         var board = [];
+        var nextMove = 'X';
 
         function processEvent(event) {
             console.debug("event", event);
@@ -15,6 +16,11 @@ module.exports = function (injected) {
 
             if(event.type==="MovePlaced") {
                 board.push(event.block);
+                if(event.side === 'X') {
+                    nextMove = 'O';
+                } else {
+                    nextMove = 'X';
+                }
             }
         }
 
@@ -34,12 +40,17 @@ module.exports = function (injected) {
             return false;
         }
 
+        function isItMyMove(side) {
+            return side === nextMove;
+        }
+
         processEvents(history);
 
         return {
             processEvents: processEvents,
             gameFull: gameFull,
-            blockFree: blockFree
+            blockFree: blockFree,
+            isItMyMove: isItMyMove
         }
     };
 };

@@ -284,7 +284,7 @@ describe('Place move command', function () {
     });   
 
     it('should not emit illegal move when square is not occupied', function () {
-                given = [{
+        given = [{
             type: "GameCreated",
             user: {
                 userName: "TheGuy"
@@ -379,6 +379,86 @@ describe('Place move command', function () {
                 block: 0,
                 side: 'O'
             }
+        ];
+    });
+
+    it('should emit Game won if player wins the game ', function () {
+        given = [{
+            type: "GameCreated",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29"
+        }, {
+            type: "JoinGame",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side:'O'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:29",
+            block: 0,
+            side: 'X'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:31:29",
+            block: 3,
+            side: 'O'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:32:29",
+            block: 1,
+            side: 'X'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:33:29",
+            block: 4,
+            side: 'O'
+        }];
+
+        when =
+        {
+            type: "PlaceMove",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:34:29",
+            block: 2,
+            side: 'X'
+        };
+
+        then = [
+        {
+            type: "GameWon",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:34:29",
+            block: 2,
+            side: 'X'
+        }
         ];
     });
 });

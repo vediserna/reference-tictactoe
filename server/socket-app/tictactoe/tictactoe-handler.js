@@ -52,7 +52,8 @@ module.exports = function(injected){
                                 block: cmd.block,
                                 side: cmd.side
                             }];
-                        if(gameState.isItMyMove(cmd.side)) {
+
+                        if(!gameState.gameWon() && gameState.isItMyMove(cmd.side)) {
                             if(!gameState.blockFree(events[0].block)) {
                                 events[0].type = "IllegalMove";
                             } else {
@@ -63,6 +64,11 @@ module.exports = function(injected){
                         }
 
                         gameState.processEvents(events);
+
+                        if(gameState.gameWon()) {
+                            events[0].type = "GameWon";
+                        }
+
                         eventHandler(events);
                     }
                 };

@@ -4,7 +4,9 @@ module.exports = function (injected) {
 
     return function (history) {
         var gameFullvariable = false;
-        var board = [];
+        var board = ['', '', '', 
+                     '', '', '',
+                     '', '', ''];
         var nextMove = 'X';
 
         function processEvent(event) {
@@ -15,7 +17,7 @@ module.exports = function (injected) {
             }
 
             if(event.type==="MovePlaced") {
-                board.push(event.block);
+                board[event.block] = event.side;
                 if(event.side === 'X') {
                     nextMove = 'O';
                 } else {
@@ -33,8 +35,7 @@ module.exports = function (injected) {
         }
 
         function blockFree(block) {
-            var blockFree = board.indexOf(block);
-            if(blockFree < 0) {
+            if(board[block] === '') {
                 return true;
             }
             return false;
@@ -44,13 +45,25 @@ module.exports = function (injected) {
             return side === nextMove;
         }
 
+        function gameWon() {
+            return (board[0] !== '' && board[1] === board[0] && board[2] === board[1]) || //horizontal
+                   (board[3] !== '' && board[4] === board[3] && board[5] === board[4]) || //horizontal
+                   (board[6] !== '' && board[7] === board[6] && board[8] === board[7]) || //horizontal
+                   (board[0] !== '' && board[3] === board[0] && board[6] === board[3]) || //vertical
+                   (board[1] !== '' && board[4] === board[1] && board[7] === board[4]) || //vertical
+                   (board[2] !== '' && board[5] === board[2] && board[8] === board[5]) || //vertical
+                   (board[0] !== '' && board[4] === board[0] && board[8] === board[4]) || //transverse
+                   (board[2] !== '' && board[4] === board[2] && board[6] === board[4])    //transverse
+        }
+
         processEvents(history);
 
         return {
             processEvents: processEvents,
             gameFull: gameFull,
             blockFree: blockFree,
-            isItMyMove: isItMyMove
+            isItMyMove: isItMyMove,
+            gameWon: gameWon
         }
     };
 };

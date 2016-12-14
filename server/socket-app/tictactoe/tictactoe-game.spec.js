@@ -89,7 +89,7 @@ describe('join game command', function () {
     });
 
 
-    it('should emit game joined event...', function () {
+    it('should emit game joined event', function () {
 
         given = [{
             type: "GameCreated",
@@ -123,7 +123,7 @@ describe('join game command', function () {
 
     });
 
-    it('should emit FullGameJoinAttempted event when game full..implement this', function () {
+    it('should emit FullGameJoinAttempted event when game full', function () {
         given = [{
             type: "GameCreated",
             user: {
@@ -283,6 +283,61 @@ describe('Place move command', function () {
         ];
     });   
 
+    it('should not emit illegal move when square is not occupied', function () {
+                given = [{
+            type: "GameCreated",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29"
+        }, {
+            type: "JoinGame",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side:'O'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:29",
+            block: 1,
+            side: 'X'
+        }
+        ];
+
+        when =
+        {
+            type: "PlaceMove",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:31:29",
+            block: 0,
+            side: 'O'
+        };
+
+        then = [
+        {
+            type: "MovePlaced",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:31:29",
+            block: 0,
+            side: 'O'
+        }
+        ];
+    });
+
+
     it('should emit Not your move if attempting to make move out of turn', function () {
         given = [{
                 type: "GameCreated",
@@ -325,5 +380,5 @@ describe('Place move command', function () {
                 side: 'O'
             }
         ];
-    });   
+    });
 });

@@ -7,7 +7,7 @@ services:
       - "80:8080"
       - "8080:3000"
     environment:
-      - NODE_ENV=prod
+      - NODE_ENV=production
   postgres:
     image: postgres:latest
     ports:

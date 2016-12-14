@@ -67,6 +67,8 @@ module.exports = function(injected){
 
                         if(gameState.gameWon()) {
                             events[0].type = "GameWon";
+                        } else if(gameState.gameDraw()) {
+                            events[0].type = "GameDraw";
                         }
 
                         eventHandler(events);

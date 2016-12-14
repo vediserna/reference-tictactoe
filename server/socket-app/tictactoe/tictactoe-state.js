@@ -56,6 +56,13 @@ module.exports = function (injected) {
                    (board[2] !== '' && board[4] === board[2] && board[6] === board[4])    //transverse
         }
 
+        function gameDraw() {
+            if(board.indexOf('') < 0) {
+                return true;
+            }
+            return false;
+        }
+
         processEvents(history);
 
         return {
@@ -63,7 +70,8 @@ module.exports = function (injected) {
             gameFull: gameFull,
             blockFree: blockFree,
             isItMyMove: isItMyMove,
-            gameWon: gameWon
+            gameWon: gameWon,
+            gameDraw: gameDraw
         }
     };
 };

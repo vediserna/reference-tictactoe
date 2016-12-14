@@ -15,3 +15,8 @@
 #TODO:
 * Does not emit GameDraw event if game is won on last move
 * Emits GameDraw if neither player wins
+
+### Game winning scenarios
+* Emit GameWon on vertical win
+* Emits GameWon on horizontal win
+* Emits GameWon on transverse win

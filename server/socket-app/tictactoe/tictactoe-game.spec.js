@@ -944,4 +944,83 @@ describe('Winning moves', function () {
             side: 'X'
         }];
     });
+
+    it('should emit Game won on vertical first row', function () {
+        given = [{
+            type: "GameCreated",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29"
+        }, {
+            type: "JoinGame",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side:'O'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:29",
+            block: 0,
+            side: 'X'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:31:29",
+            block: 1,
+            side: 'O'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:32:29",
+            block: 3,
+            side: 'X'
+        }, {
+            type: "MovePlaced",
+            user: {
+                userName: "Gummi"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:33:29",
+            block: 2,
+            side: 'O'
+        }];
+
+        when =
+        {
+            type: "PlaceMove",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:38:29",
+            block: 6,
+            side: 'X'
+        };
+
+        then = [
+        {
+            type: "GameWon",
+            user: {
+                userName: "TheGuy"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:38:29",
+            block: 6,
+            side: 'X'
+        }];
+    });
 });

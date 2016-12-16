@@ -5,7 +5,7 @@ echo "*~*~| Committing |~*~*"
 echo "    |____________|"
 
 echo Cleaning...
-rm -rf ./dist
+rm -rf ./build
 
 if [ -z "$GIT_COMMIT" ]; then
   export GIT_COMMIT=$(git rev-parse HEAD)

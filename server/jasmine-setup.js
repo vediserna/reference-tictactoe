@@ -9,4 +9,8 @@ var consoleReporter = new JasmineConsoleReporter({
     listStyle: 'indent', // "flat"|"indent"
     activity: false
 });
+var junitReporter = new jasmineReporters.JUnitXmlReporter({
+    savePath: '../junitxmlfile.xml',
+    consolidateAll: false
+});
 jasmine.getEnv().addReporter(consoleReporter);

@@ -15,6 +15,8 @@ module.exports=function(injected){
             env:"test"
         }));
 
+        var thisGame = {};
+
         connectCount++;
         const me = {
             expectUserAck:(cb)=>{
@@ -54,6 +56,77 @@ module.exports=function(injected){
                 return me;
 
             },
+            expectGameCreated:function() {
+                waitingFor.push("expectGameCreated");
+                routingContext.eventRouter.on('GameCreated', function(game) {
+                   thisGame = game;
+                    expect(game.gameId).not.toBeUndefined();
+                    if(game.gameId === thisGame.gameId) {
+                       waitingFor.pop();
+                    }
+                });
+
+                return me;
+            },
+
+            createGame:function() {
+                thisGame.gameId = generateUUID();
+                var cId = commandId++;
+                routingContext.commandRouter.routeMessage({commandId:cId, type:"CreateGame", gameId:thisGame.gameId});
+                return me;
+            },
+
+            expectGameJoined:function() {
+                waitingFor.push("expectGameJoined");
+                routingContext.eventRouter.on('GameJoined', function(game) {
+                    thisGame = game;
+                    expect(game.gameId).not.toBeUndefined();
+                    if(game.gameId === thisGame.gameId) {
+                       waitingFor.pop();
+                    }
+                });
+                return me;
+            },
+
+            joinGame:function(gId) {
+                var cId = commandId++;
+                routingContext.commandRouter.routeMessage({gameId:gId, type:"JoinGame", commandId:cId});
+                return me;
+            },
+
+            getGame:function() {
+                return thisGame;
+            },
+
+            expectMoveMade:function() {
+                waitingFor.push("expectMoveMade");
+                routingContext.eventRouter.on('MovePlaced', function(game) {
+                    expect(game.gameId).not.toBeUndefined();
+                    if(game.gameId === thisGame.gameId) {
+                       waitingFor.pop();
+                    }
+                });
+                return me;
+            },
+
+            placeMove:function(row, col) {
+                var bl = row*3+col;
+                var cId = commandId++;
+                routingContext.commandRouter.routeMessage({gameId:thisGame.gameId, side:thisGame.side, type:"PlaceMove", commandId:cId, block:bl});
+                return me;
+            },
+
+            expectGameWon:function() {
+                waitingFor.push("expectGameWon");
+                routingContext.eventRouter.on('GameWon', function(game) {
+                    expect(game.gameId).not.toBeUndefined();
+                    if(game.gameId === thisGame.gameId) {
+                       waitingFor.pop();
+                    }
+                });
+                return me;
+            },
+
             then:(whenDoneWaiting)=>{
                 function waitLonger(){
                     if(waitingFor.length>0){
@@ -61,14 +134,14 @@ module.exports=function(injected){
                         return;
                     }
                     whenDoneWaiting();
+                    
                 }
                 waitLonger();
                 return me;
             },
             disconnect:function(){
                 routingContext.socket.disconnect();
-            }
-
+            },
         };
         return me;
 

@@ -5,9 +5,7 @@ const MessageRouter = require('./common/framework/message-router');
 const IncomingSocketMessageDispatcherModule = require('./common/framework/incoming-socket-message-dispatcher');
 const OutgoingSocketIoMessagePortModule = require('./common/framework/outgoing-socket-io-message-port');
 
-
 function routingContext(injected){
-
     const eventRouter = MessageRouter();
     const commandRouter = MessageRouter();
     const queryRouter = MessageRouter();

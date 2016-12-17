@@ -32,8 +32,25 @@ describe('Tictactoe API', function () {
     });
 
     it('should be able to play game to end', function (done) {
-
-        expect("Tictactoe API acceptance test").toBe("implemented here");
+            userA.expectGameCreated().createGame().then(()=> {
+                userB.expectGameJoined().joinGame(userA.getGame().gameId).then(function () {
+                    userA.expectMoveMade().placeMove(0, 0).then(()=> {
+                        userA.expectMoveMade();
+                        userB.expectMoveMade().placeMove(1, 0).then(()=> {
+                            userB.expectMoveMade(); // By other user
+                            userA.expectMoveMade().placeMove(1, 1).then(()=> {
+                                userA.expectMoveMade(); // By other user
+                                userB.expectMoveMade().placeMove(0, 2).then(()=> {
+                                    userB.expectMoveMade(); // By other user
+                                    userA.expectMoveMade().placeMove(2, 2)
+                                        .expectGameWon().then(done); // Winning move
+                                })
+                            })
+                        });
+                    })
+                })
+            }
+        );
 
 /*
 
@@ -64,9 +81,6 @@ for a load test where multiple users will be playing.
             }
         );
 */
-
-
-    });
-
 });
 
+});

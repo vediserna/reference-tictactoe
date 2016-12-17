@@ -36,7 +36,7 @@ module.exports=function(injected){
                     errCb('error fetching db connection from pool:' + err);
                 }
 
-                var statement = 'SELECT id, timestamp, json FROM eventlog';
+                var statement = 'SELECT id, timestamp, json FROM ';
                 var statementParams = [];
 
                 connection.query(statement,statementParams, function(err, result) {

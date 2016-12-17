@@ -23,6 +23,7 @@ module.exports = function (injected) {
                 } else {
                     nextMove = 'X';
                 }
+                console.debug("***BOARD STATUS***" ,board);
             }
         }
 

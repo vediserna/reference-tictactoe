@@ -15,12 +15,12 @@ const testAPI = TestAPI(inject({
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
-describe('User chat load test', function(){
+describe('Tictactoe Loadtest', function () {
+    var userA, userB;
 
-
-    beforeEach(function(done){
+    beforeEach(function (done) {
         var testapi = testAPI();
-        testapi.waitForCleanDatabase().cleanDatabase().then(()=>{
+        testapi.waitForCleanDatabase().cleanDatabase().then(()=> {
             testapi.disconnect();
             done();
         });
@@ -29,8 +29,7 @@ describe('User chat load test', function(){
     const count = 200;
     const timelimit = 20000;
 
-    it('should connect and send ' + count + '  user messages within '+ timelimit +'ms',function(done){
-
+    it('should be able to play ' + count + ' games to end in under ' + timelimit + 'ms', function (done) {
         var startMillis = new Date().getTime();
 
         var user;
@@ -38,12 +37,11 @@ describe('User chat load test', function(){
         for(var i=0; i<count; i++){
             user = userAPI("User#" + i);
             users.push(user);
-            user.sendChatMessage('Message ' + i);
         }
 
         user = userAPI("Final user");
-        user.expectChatMessageReceived('TWO')
-            .sendChatMessage('TWO')
+        user.expectGameCreated()
+            .createGame()
             .then(function(){
                 user.disconnect();
                 _.each(users, function(usr){
@@ -61,5 +59,3 @@ describe('User chat load test', function(){
             });
     });
 });
-
-

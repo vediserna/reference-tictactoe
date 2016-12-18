@@ -29,7 +29,7 @@ describe('Tictactoe Loadtest', function () {
     const count = 100;
     const timelimit = 10000;
 
-    fit('should be able to play ' + count + ' games to end in under ' + timelimit + 'ms', function (done) {
+    it('should be able to play ' + count + ' games to end in under ' + timelimit + 'ms', function (done) {
         var startMillis = new Date().getTime();
 
         var user;

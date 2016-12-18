@@ -10,7 +10,7 @@ module.exports = function (injected) {
         var nextMove = 'X';
 
         function processEvent(event) {
-            console.debug("event", event);
+            //console.debug("event", event);
 
             if(event.type==="JoinGame") {
                 gameFullvariable = true;
@@ -23,7 +23,7 @@ module.exports = function (injected) {
                 } else {
                     nextMove = 'X';
                 }
-                console.debug("***BOARD STATUS***" ,board);
+                //console.debug("***BOARD STATUS***" ,board);
             }
         }
 

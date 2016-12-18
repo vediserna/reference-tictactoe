@@ -5,6 +5,11 @@ passw: hgop542
 
 2. Game URL (AWS)
  http://54.191.32.51/
+ 
+3. Github
+https://github.com/vediserna/reference-tictactoe
+I added hap2000 as a collaborator but here is the link just to be safe :)
+https://github.com/vediserna/reference-tictactoe/invitations
 
 ## Scripts
 
